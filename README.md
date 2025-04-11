@@ -24,7 +24,7 @@ afdb/
 ### 1. Install Requirements
 
 ```bash
-pip install scrapy
+pip install -r requirements.txt
 ```
 
 ### 2. Run the Spider

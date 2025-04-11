@@ -1,63 +1,86 @@
-# afdb-scraper
+# 🕷️ AFDB Scrapy Crawler
 
-This Python project is designed to scrape data from the [AFDB Hardware Store](https://www.afdb.fr/) website. It uses the Scrapy framework with a CrawlSpider spider model to efficiently collect information from various product pages. The scraped data is then stored in a CSV file named `afdb.csv`.
+A Scrapy-based web crawler for extracting product data from [AFDB.fr](https://www.afdb.fr). This project scrapes detailed product information, including title, brand, stock status, images, and technical specifications.
 
-## Table of Contents
-- [Project Description](#project-description)
-- [Prerequisites](#prerequisites)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Fields Scraped](#fields-scraped)
-- [Sample Output](#sample-output)
+---
 
-## Project Description
+## 📁 Project Structure
 
-The main goal of this project is to gather product information from the AFDB Hardware Store website. This information includes details like the product's URL, title, brand, image URLs, description, category, SKU, details, variation, finish, and stock.
-
-## Prerequisites
-
-Before running the scraper, you need to ensure that you have the following dependencies installed:
-
-- Python 3.x
-- Scrapy
-
-
-You can install Scrapy and other dependencies by running the following command:
-
-```bash
-pip install -r requirements.txt
+```
+afdb/
+├── afdb/
+│   ├── __init__.py
+│   ├── items.py           # Defines scraped data fields
+│   ├── settings.py        # Scrapy settings (feeds, concurrency, etc.)
+│   └── spiders/
+│       ├── __init__.py
+│       └── products.py    # CrawlSpider for product pages
 ```
 
-## Installation 
-1. Clone this repository to your local machine:
-```bash
-git clone https://github.com/bensouiciakram/hardware-store-scraper.git
-```
-2. Install the project's dependencies as mentioned in the prerequisites section.
+---
 
-## Usage 
-To start scraping the AFDB Hardware Store website, run the following command from the project's root directory:
+## 🚀 How to Run the Spider
+
+### 1. Install Requirements
+
+```bash
+pip install scrapy
+```
+
+### 2. Run the Spider
+
 ```bash
 scrapy crawl products
 ```
-This will initiate the scraper, and it will start collecting data from the website. The scraped data will be stored in a CSV file named afdb.csv.
 
-## Fields Scraped
+This will generate a file named `afdb.json` in the project root containing the scraped data in JSON format.
 
-The following fields are collected for each product:
+---
 
-* URL
-* Title
-* Brand
-* Image URLs
-* Description
-* Category
-* SKU
-* Details
-* Variation
-* Finish
-* Stock 
+## 📦 Output Example
 
+Each product item includes:
 
+```json
+{
+  "url": "https://www.afdb.fr/...SKU...",
+  "title": "Product Name",
+  "brand": "Brand Name",
+  "description": "Product description here...",
+  "category": "Category",
+  "image_urls": "https://www.afdb.fr/images/product.jpg",
+  "sku": "SKU12345",
+  "type": "Some Type",
+  "finition": "Matte",
+  "stock": "En Stock",
+  "details": {
+    "Weight": "5kg",
+    "Dimensions": "30x20x10cm"
+  },
+  "variure": "VAR1"
+}
+```
 
+---
 
+## ⚙️ Configuration (Highlights from `settings.py`)
+
+- **Bot Name**: `afdb`
+- **ROBOTSTXT_OBEY**: `False`
+- **FEEDS**: JSON output saved as `afdb.json`
+
+---
+
+## 🕸️ Spider Behavior (`products.py`)
+
+- Starts from: `https://www.afdb.fr`
+- Follows links ending with `.html` or containing `SKU`
+- Filters out `INTERSHOP` links
+- Uses structured JSON-LD to extract SKUs
+- Extracts stock data from a secondary AJAX call
+
+---
+
+## 📄 License
+
+MIT License. This is an educational or research tool. Use responsibly and ethically.
